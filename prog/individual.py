@@ -10,7 +10,7 @@ def get_poezd():
     name = input("Название пункта назначения? ")
     no = input("Номер поезда? ")
     time_str = input("Введите время отправления (чч:мм)\n")
-    t = time.strptime(time_str, "%H:%M")
+    t = time.asctime(time.strptime(time_str, "%H:%M"))[11:-5]
     return {
         "name": name,
         "no": no,
@@ -31,7 +31,7 @@ def list(poezd):
     for idx, po in enumerate(poezd, 1):
         print(
             "| {:>10} | {:<20} | {"
-            "} |".format(po.get("no", ""), po.get("name", ""), po.get("t", 0))
+            "} |".format(po.get("no", ""), po.get("name", ""), po.get("t", ""))
         )
     print(line)
 
@@ -45,7 +45,7 @@ def select(poezd):
                 "Название пункта: ",
                 po["name"],
                 "\nВремя отправления: ",
-                time.strftime("%H:%M", po["t"]),
+                po.get("t", ""),
             )
             count += 1
 
