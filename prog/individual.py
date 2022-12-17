@@ -7,6 +7,7 @@ import time
 
 
 def get_poezd():
+    # запросить данные о поезде
     name = input("Название пункта назначения? ")
     no = input("Номер поезда? ")
     time_str = input("Введите время отправления (чч:мм)\n")
@@ -19,21 +20,25 @@ def get_poezd():
 
 
 def list(poezd):
-    line = "+-{}-+-{}-+-{}-+".format(
-        "-" * 10,
-        "-" * 20,
-        "-" * 8,
-    )
-    print(line)
-    print("| {:^10} | {:^20} | {:^8} |".format(" No ", "Название", "Время"))
-    print(line)
-
-    for idx, po in enumerate(poezd, 1):
-        print(
-            "| {:>10} | {:<20} | {"
-            "} |".format(po.get("no", ""), po.get("name", ""), po.get("t", ""))
+    # Проверить, что список работников не пуст.
+    if poezd:
+        line = "+-{}-+-{}-+-{}-+".format(
+            "-" * 10,
+            "-" * 20,
+            "-" * 8,
         )
-    print(line)
+        print(line)
+        print("| {:^10} | {:^20} | {:^8} |".format(" No ", "Название", "Время"))
+        print(line)
+
+        for idx, po in enumerate(poezd, 1):
+            print(
+                "| {:>10} | {:<20} | {"
+                "} |".format(po.get("no", ""), po.get("name", ""), po.get("t", ""))
+            )
+        print(line)
+    else:
+        print("Список поездов пуст.")
 
 
 def select(poezd, nom):
