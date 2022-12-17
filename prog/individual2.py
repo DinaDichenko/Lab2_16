@@ -37,25 +37,16 @@ def list(poezd):
     print(line)
 
 
-def select(poezd):
-    count = 0
-    nom = input("Введите номер поезда: ")
-    for idx, po in enumerate(poezd, 1):
-        if po["no"] == str(nom):
-            print(
-                "Название пункта: ",
-                po["name"],
-                "\nВремя отправления: ",
-                po.get("t", ""),
-            )
-            count += 1
-
-    if count == 0:
-        print("Поезда с таким номером нет")
+def select(poezd, nom):
+    result = [po for po in poezd if po.get("no", "") == nom]
+    return result
 
 
 def save_poezd(file_name, poezd):
+    # Открыть файл с заданным именем для записи.
     with open(file_name, "w", encoding="utf-8") as fout:
+        # Выполнить сериализацию данных в формат JSON.
+        # Для поддержки кирилицы установим ensure_ascii=False
         json.dump(poezd, fout, ensure_ascii=False, indent=4)
 
 
@@ -90,7 +81,7 @@ def help():
     print("Список команд:\n")
     print("add - добавить поезд;")
     print("list - вывести список поездов;")
-    print("select <номер> - запросить поезд по номеру;")
+    print("select - запросить поезд по номеру;")
     print("load - загрузить данные из файла;")
     print("save - сохранить данные в файл;")
     print("help - отобразить справку;")
@@ -115,8 +106,11 @@ def main():
         elif command == "list":
             list(poezd)
 
-        elif command == ("select"):
-            select(poezd)
+        elif command.startswith("select"):
+            print("Введите номер поезда: ")
+            nom = input()
+            selected = select(poezd, nom)
+            list(selected)
 
         elif command == "help":
             help()
